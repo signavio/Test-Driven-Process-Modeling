@@ -68,6 +68,3 @@ applicantEligible = false;
 
 - [Matwog](https://github.com/Matwog)
 
-## License
-
-No license yet.

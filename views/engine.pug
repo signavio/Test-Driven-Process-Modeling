@@ -1,0 +1,28 @@
+
+
+extends layout
+
+block content
+  br
+  h7 #{title}
+  br
+  br
+  form(method='POST', action='/engine')
+    #form-group
+      label Username  :
+      input.form-controller(name='username', type='text', required)
+    #form-group
+      label Password  :
+      input#password.form-controller(type='password', name='password', data-toggle='password', required)
+    #form-group
+      label Diagram ID :  
+      input.form-controller(name='diagramID', type='text', required)
+    #form-group
+      label Global variables :  
+      input.form-controller(name='globalVariables', type='text', required)
+    #form-group
+      label Contract Name :  
+      input.form-controller(name='contractName', type='text', required)
+
+    input.btn.btn-primary(type='submit',value='Submit',id="submit")
+

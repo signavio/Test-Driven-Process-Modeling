@@ -1,0 +1,49 @@
+doctype html
+html
+    head
+        title SCM Engine
+        link(rel='stylesheet' href='/bower_components/bootstrap/dist/css/bootstrap.css')
+        link(rel='stylesheet', href='node_modules/xterm/dist/xterm.css')
+        script(src='node_modules/xterm/dist/xterm.js')
+    body(bgcolor='ad0f5b')
+        nav.navbar.navbar-expand-md.navbar-dark.bg-dark
+            a.navbar-brand(href='#') Signavio SCM 
+            button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarsExampleDefault', aria-controls='navbarsExampleDefault', aria-expanded='false', aria-label='Toggle navigation')
+                span.navbar-toggler-icon
+            #navbarsExampleDefault.collapse.navbar-collapse
+                ul.navbar-nav.mr-auto
+                    li.nav-item.active
+                        a.nav-link(href='/')
+                            | Home 
+                            span.sr-only (current)
+                    li.nav-item
+                        a.nav-link(href='/engine') Engine
+                //-     li.nav-item
+                //-         a.nav-link.disabled(href='#', tabindex='-1', aria-disabled='true') Disabled
+                //-     li.nav-item.dropdown
+                //-         a#dropdown01.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Dropdown
+                //-     .dropdown-menu(aria-labelledby='dropdown01')
+                //-             a.dropdown-item(href='#') Action
+                //-             a.dropdown-item(href='#') Another action
+                //-             a.dropdown-item(href='#') Something else here
+                //- form.form-inline.my-2.my-lg-0
+                //-     input.form-control.mr-sm-2(type='text', placeholder='Search', aria-label='Search')
+                //-     button.btn.btn-secondary.my-2.my-sm-0(type='submit') Search
+
+        
+        #terminal
+        script.
+            var term = new Terminal();
+            term.open(document.getElementById('terminal'));
+            term.write('Hello from \\x1B[1;3;31mxterm.js\x1B[0m $ ')
+
+        .container
+            block content
+            br
+            hr
+            footer
+                p Copyright &copy; 2019
+        
+        script(src='/bower_components/jquery/dist/jquery.js')
+        script(src='/bower_components/bootstrap/dist/js/bootstrap.js')
+

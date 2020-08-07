@@ -1,22 +1,15 @@
-const express = require('express')
-const path = require('path')
-const mongoose = require('mongoose')
-const bodyparser = require('body-parser')
-const request = require('request')
-const StringDecoder = require('string_decoder').StringDecoder
-const cookieParser = require('cookie-parser')
-const axios = require('axios')
-const qs = require('qs')
-const http = require('http')
-const https = require('https')
-const fetch = require('node-fetch')
-const { exec } = require('child_process')
-const convert = require('xml-js')
-const kill = require('kill-port')
-const preProcessingModule = require('./preProcessingModule')
-const compiler = require('bpmn-sol')
-const testModule = require('./testModule')
-const fetchTestScript = require('./testModule')
+import express from 'express'
+import path from 'path'
+import bodyparser from 'body-parser'
+import request from 'request'
+import StringDecoder from 'string_decoder'
+import cookieParser from 'cookie-parser'
+import axios from 'axios'
+import qs from 'qs'
+import { addGlobalDocumentation } from './preProcessingModule'
+import compiler from 'bpmn-sol'
+import { testModule } from './testModule'
+import { fetchTestScript } from './testModule'
 
 const app = express()
 const port = process.env.PORT || 4000
@@ -29,19 +22,19 @@ app.use(bodyparser.urlencoded({ extended: false }))
 app.use(bodyparser.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.get('/', (req, res) => {
+app.get('/', (req: any, res: { render: (arg0: string, arg1: { title: string }) => void }) => {
   res.render('home', {
     title: '',
   })
 })
 
-app.get('/engine', (req, res) => {
+app.get('/engine', (req: any, res: { render: (arg0: string, arg1: { title: string }) => void }) => {
   res.render('engine', {
     title: 'Please login with your Signavio credentials and Diagram ID',
   })
 })
 
-app.post('/engine', async (req, res, next) => {
+app.post('/engine', async (req: { body: { username: any; password: any; diagramID: any; globalVariables: any; contractName: any } }, res: { redirect: (arg0: string) => void }, next: any) => {
   var jsonDiagram
   var xmlDiagram
 
@@ -51,7 +44,7 @@ app.post('/engine', async (req, res, next) => {
   var globalVariables = req.body.globalVariables
   var contractName = req.body.contractName
 
-  const base_url = 'https://editor.signavio.com' 
+  const base_url = 'https://editor.signavio.com'
   const login_url = base_url + '/p/login'
   var workspace_ID = '95cfa9c10e37451f827f6f3421f2e56d'
   var format = 'bpmn2_0_xml'
@@ -59,33 +52,33 @@ app.post('/engine', async (req, res, next) => {
 
   //Main authentication of the Signavio credentials
   const authenticate = async () => {
-    var cookieData
+    var cookieData: any
 
     await axios
       .post(login_url, qs.stringify(data))
-      .then(function(response) {
+      .then(function (response: { headers: { [x: string]: any } }) {
         cookieData = response.headers['set-cookie']
         return cookieData
         //console.log(cookieData)
       })
-      .catch(function(error) {
+      .catch(function (error: any) {
         console.log(error)
       })
 
     fetchXML(cookieData)
 
-    async function fetchXML(cookieData) {
-      let temp1 = String(cookieData[0]).split(';')
+    async function fetchXML(cookieData: any[] | undefined) {
+      let temp1 = String(cookieData![0]).split(';')
       let jID = String(temp1[0]).split('=')
-      jsesssion_ID = jID[1]
+      let jsesssion_ID = jID[1]
 
-      let temp2 = String(cookieData[1]).split(';')
+      let temp2 = String(cookieData![1]).split(';')
       let tok = String(temp2[0]).split('=')
-      auth_token = tok[1]
+      let auth_token = tok[1]
 
-      let temp3 = String(cookieData[4]).split(';')
+      let temp3 = String(cookieData![4]).split(';')
       let rID = String(temp3[0]).split('=')
-      lb_route_ID = rID[1]
+      let lb_route_ID = rID[1]
 
       let diagram_url =
         base_url + '/p/revision' + '/' + revision_ID + '/' + format
@@ -93,7 +86,7 @@ app.post('/engine', async (req, res, next) => {
       let cookies = { JSESSIONID: jsesssion_ID, LBROUTEID: lb_route_ID }
       let headers = { Accept: 'application/json', 'x-signavio-id': auth_token }
 
-      let options = {
+      let options: any = {
         method: 'GET',
         url: diagram_url,
         headers: {
@@ -109,25 +102,25 @@ app.post('/engine', async (req, res, next) => {
       }
 
       xmlDiagram = await axios(options)
-        .then(function(response) {
+        .then(function (response: { data: any }) {
           return response.data
         })
-        .catch(function(error) {
+        .catch(function (error: any) {
           console.log(error)
         })
 
-      let xmlWithGlobalVariables = preProcessingModule.addGlobalDocumentation(
+      let xmlWithGlobalVariables = addGlobalDocumentation(
         xmlDiagram,
         globalVariables,
         contractName
       )
 
-      let successFlag = testModule.testModule(xmlDiagram)
+      let successFlag = testModule(xmlDiagram)
 
       if (successFlag) {
         const contract = compiler
           .compile(xmlWithGlobalVariables)
-          .then(contract => {
+          .then((contract: any) => {
             console.log(contract)
             res.redirect('/result')
           })
@@ -140,14 +133,14 @@ app.post('/engine', async (req, res, next) => {
   authenticate()
 })
 
-app.get('/result', (req, res) => {
+app.get('/result', (req: any, res: { render: (arg0: string, arg1: { title: string }) => void }) => {
   res.render('result', {
     title:
       'The Test has passed and diagram has been successfully compiled to smart contract',
   })
 })
 
-app.get('/error', (req, res) => {
+app.get('/error', (req: any, res: { render: (arg0: string, arg1: { title: string }) => void }) => {
   res.render('error', {
     title: 'The Test has failed',
   })

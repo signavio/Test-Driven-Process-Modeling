@@ -1,14 +1,14 @@
-const fs = require('fs')
-const path = require('path')
-const parseString = require('xml2js').parseString
-const convert = require('xml-js')
-const builder = require('xmlbuilder')
+import fs from 'fs'
+import path from 'path'
+import parseString from 'xml2js'
+import convert from 'xml-js'
+import builder from 'xmlbuilder'
 
-let testValuesArray = []
+let testValuesArray: never[] = []
 
 // This function fetches the test values from the bpmn 2.0 xml
-exports.fetchTestValue = xmlString => {
-  let jsonDiagram = convert.xml2js(xmlString, { compact: true, spaces: 4 })
+export const fetchTestValue = (xmlString: any) => {
+  let jsonDiagram: any = convert.xml2js(xmlString, { compact: true })
   for (const key in jsonDiagram.definitions.process.extensionElements[
     'signavio:signavioDiagramMetaData'
   ]) {
@@ -45,9 +45,9 @@ exports.fetchTestValue = xmlString => {
 
 // This function takes xml data as a string and the global input variables and adds the global variables to the xml
 // This function returns the xml object
-exports.addGlobalDocumentation = (xmlString, inputVariables, contractName) => {
-  let jsonDiagram = convert.xml2js(xmlString, { compact: true, spaces: 4 })
-  let json2 = {}
+export const addGlobalDocumentation = (xmlString: any, inputVariables: any, contractName: any) => {
+  let jsonDiagram: any = convert.xml2js(xmlString, { compact: true })
+  let json2: any = {}
 
   for (const key in jsonDiagram.definitions.process.extensionElements[
     'signavio:signavioDiagramMetaData'

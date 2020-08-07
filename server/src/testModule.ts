@@ -1,15 +1,15 @@
-const fs = require('fs')
-const path = require('path')
-const parseString = require('xml2js').parseString
-const convert = require('xml-js')
-const builder = require('xmlbuilder')
-const preProcessingModule = require('./preProcessingModule')
+import fs from 'fs'
+import path from 'path'
+import { parseString } from 'xml2js'
+import convert from 'xml-js'
+import builder from 'xmlbuilder'
+import { fetchTestValue } from './preProcessingModule'
 
-fetchTestScript = xmlString => {
-  let jsonDiagram = convert.xml2js(xmlString, { compact: true, spaces: 4 })
-  let testString = ''
+export const fetchTestScript = (xmlString: any) => {
+  let jsonDiagram: any = convert.xml2js(xmlString, { compact: true })
+  let testString: any = ''
   Object.keys(jsonDiagram.definitions.process.scriptTask.script).forEach(
-    key => {
+    (key) => {
       if (key == '_cdata' || key == '_text') {
         testString = jsonDiagram.definitions.process.scriptTask.script[key]
       }
@@ -23,7 +23,7 @@ fetchTestScript = xmlString => {
   const value1 = testString.match(regexCondition2)[0]
   const value2 = testString.match(regexCondition2)[1]
 
-  test = testValue => {
+  const test = (testValue: any) => {
     if (eval(condition1)) {
       return eval(value1)
     } else {
@@ -32,9 +32,9 @@ fetchTestScript = xmlString => {
   }
 }
 
-exports.testModule = xmlString => {
+export const testModule = (xmlString: any) => {
   fetchTestScript(xmlString)
-  let testValuesArray = preProcessingModule.fetchTestValue(xmlString)
+  let testValuesArray: any = fetchTestValue(xmlString)
 
   // test module
   let successFlag = false

@@ -15,7 +15,7 @@ export const fetchTestValue = (xmlString: any) => {
     if (
       jsonDiagram.definitions.process.extensionElements[
         'signavio:signavioDiagramMetaData'
-      ][key]._attributes.metaKey == 'meta-testvalues'
+      ][key]._attributes?.metaKey == 'meta-testvalues'
     ) {
       let temp = JSON.parse(
         jsonDiagram.definitions.process.extensionElements[
@@ -32,7 +32,7 @@ export const fetchTestValue = (xmlString: any) => {
     if (
       jsonDiagram.definitions.process.extensionElements[
         'signavio:signavioDiagramMetaData'
-      ][key]._attributes.metaKey == 'meta-testvalues'
+      ][key]._attributes?.metaKey == 'meta-testvalues'
     ) {
       delete jsonDiagram.definitions.process.extensionElements[
         'signavio:signavioDiagramMetaData'
@@ -55,7 +55,7 @@ export const addGlobalDocumentation = (xmlString: any, inputVariables: any, cont
     if (
       jsonDiagram.definitions.process.extensionElements[
         'signavio:signavioDiagramMetaData'
-      ][key]._attributes.metaKey == 'meta-testvalues'
+      ][key]._attributes?.metaKey == 'meta-testvalues'
     ) {
       delete jsonDiagram.definitions.process.extensionElements[
         'signavio:signavioDiagramMetaData'

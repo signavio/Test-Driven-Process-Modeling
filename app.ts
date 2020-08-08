@@ -20,17 +20,17 @@ app.set('view engine', 'pug')
 
 app.use(bodyparser.urlencoded({ extended: false }))
 app.use(bodyparser.json())
-// app.use(express.static(path.join(__dirname, 'public')))
-app.use(express.static(path.resolve("./") + "/build/client"))
+app.use(express.static(path.join(__dirname, 'public')))
+// app.use(express.static(path.resolve("./") + "/build/client"))
 
-// app.get('/', (req: any, res: { render: (arg0: string, arg1: { title: string }) => void }) => {
-//   res.render('home', {
-//     title: '',
-//   })
-// })
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve("./") + "/build/frontend/index.html")
+app.get('/', (req: any, res: { render: (arg0: string, arg1: { title: string }) => void }) => {
+  res.render('home', {
+    title: '',
+  })
 })
+// app.get("*", (req, res) => {
+//   res.sendFile(path.resolve("./") + "/build/frontend/index.html")
+// })
 
 app.get('/engine', (req: any, res: { render: (arg0: string, arg1: { title: string }) => void }) => {
   res.render('engine', {
@@ -119,19 +119,31 @@ app.post('/engine', async (req: { body: { username: any; password: any; diagramI
         contractName
       )
 
-      let successFlag = testModule(xmlDiagram)
-
-      if (successFlag) {
+      // let successFlag = testModule(xmlDiagram)
+      try {
         const contract =
           compile(xmlWithGlobalVariables)
             .then((contract: any) => {
               console.log(contract)
               res.redirect('/result')
             })
-      } else {
+
+      } catch (e) {
         res.redirect('/error')
       }
     }
+
+    // if (successFlag) {
+    //   const contract =
+    //     compile(xmlWithGlobalVariables)
+    //       .then((contract: any) => {
+    //         console.log(contract)
+    //         res.redirect('/result')
+    //       })
+    // } else {
+    //   res.redirect('/error')
+    // }
+    // }
   }
 
   authenticate()

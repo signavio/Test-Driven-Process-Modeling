@@ -6,10 +6,10 @@ import StringDecoder from 'string_decoder'
 import cookieParser from 'cookie-parser'
 import axios from 'axios'
 import qs from 'qs'
-import { addGlobalDocumentation } from './preProcessingModule'
-import compiler from 'bpmn-sol'
-import { testModule } from './testModule'
-import { fetchTestScript } from './testModule'
+import { addGlobalDocumentation } from './server/preProcessingModule'
+import { compile } from 'bpmn-sol'
+import { testModule } from './server/testModule'
+import { fetchTestScript } from './server/testModule'
 
 const app = express()
 const port = process.env.PORT || 4000
@@ -20,12 +20,16 @@ app.set('view engine', 'pug')
 
 app.use(bodyparser.urlencoded({ extended: false }))
 app.use(bodyparser.json())
-app.use(express.static(path.join(__dirname, 'public')))
+// app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.resolve("./") + "/build/client"))
 
-app.get('/', (req: any, res: { render: (arg0: string, arg1: { title: string }) => void }) => {
-  res.render('home', {
-    title: '',
-  })
+// app.get('/', (req: any, res: { render: (arg0: string, arg1: { title: string }) => void }) => {
+//   res.render('home', {
+//     title: '',
+//   })
+// })
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve("./") + "/build/frontend/index.html")
 })
 
 app.get('/engine', (req: any, res: { render: (arg0: string, arg1: { title: string }) => void }) => {
@@ -118,12 +122,12 @@ app.post('/engine', async (req: { body: { username: any; password: any; diagramI
       let successFlag = testModule(xmlDiagram)
 
       if (successFlag) {
-        const contract = compiler
-          .compile(xmlWithGlobalVariables)
-          .then((contract: any) => {
-            console.log(contract)
-            res.redirect('/result')
-          })
+        const contract =
+          compile(xmlWithGlobalVariables)
+            .then((contract: any) => {
+              console.log(contract)
+              res.redirect('/result')
+            })
       } else {
         res.redirect('/error')
       }

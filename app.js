@@ -17,6 +17,7 @@ const preProcessingModule = require('./preProcessingModule')
 const compiler = require('bpmn-sol')
 const testModule = require('./testModule')
 const fetchTestScript = require('./testModule')
+const beautify = require('js-beautify').js
 
 const app = express()
 const port = process.env.PORT || 4000
@@ -51,7 +52,7 @@ app.post('/engine', async (req, res, next) => {
   var globalVariables = req.body.globalVariables
   var contractName = req.body.contractName
 
-  const base_url = 'https://editor.signavio.com' 
+  const base_url = 'https://editor.signavio.com'
   const login_url = base_url + '/p/login'
   var workspace_ID = '95cfa9c10e37451f827f6f3421f2e56d'
   var format = 'bpmn2_0_xml'
@@ -63,12 +64,12 @@ app.post('/engine', async (req, res, next) => {
 
     await axios
       .post(login_url, qs.stringify(data))
-      .then(function(response) {
+      .then(function (response) {
         cookieData = response.headers['set-cookie']
         return cookieData
         //console.log(cookieData)
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error)
       })
 
@@ -109,10 +110,10 @@ app.post('/engine', async (req, res, next) => {
       }
 
       xmlDiagram = await axios(options)
-        .then(function(response) {
+        .then(function (response) {
           return response.data
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error)
         })
 
@@ -127,8 +128,24 @@ app.post('/engine', async (req, res, next) => {
       if (successFlag) {
         const contract = compiler
           .compile(xmlWithGlobalVariables)
-          .then(contract => {
-            console.log(contract)
+          .then((contract) => {
+            console.log(
+              'Solidity Smart Contract:',
+              beautify(contract.Solidity, {
+                indent_size: 2,
+                space_in_empty_paren: true,
+              })
+            )
+            console.log(
+              '--------------------------------------------------------------------------------------------------------------------------------------------------------'
+            )
+            console.log(
+              'ABI:',
+              beautify(contract.ABI, {
+                indent_size: 2,
+                space_in_empty_paren: true,
+              })
+            )
             res.redirect('/result')
           })
       } else {

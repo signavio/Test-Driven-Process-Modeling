@@ -50,6 +50,13 @@ uint userID; bool applicantEligible = false;
 
 - Click _submit_ . The compiled details of the smart contract is then logged in the console(terminal).
 
+## Model with Multiple script tasks:
+It is possible to deploy a model with multiple script tasks. A sample revision ID of a model with multiple XOR gateways - `3c05dda7ae85427ca3f0ac4ec5041f75`
+Corresponding global variables: 
+```
+uint userID; bool applicantEligible = false;
+```
+
 ## Note
 
 The test case in the script task must adhere to the following format.

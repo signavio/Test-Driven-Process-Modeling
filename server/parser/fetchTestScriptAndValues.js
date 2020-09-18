@@ -1,4 +1,4 @@
-const convert = require('xml-js')
+import convert from 'xml-js'
 
 /**
  * Method takes in the xml as sting and parses to fetch the test script and test values

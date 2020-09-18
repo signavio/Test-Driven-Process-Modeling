@@ -3,9 +3,9 @@
  */
 
 import fetchTestScriptAndValues from './parser/fetchTestScriptAndValues.js'
+import getInputAndOutputTestValues from './parser/getInputAndOutputTestValues'
 import getTestFunctions from './parser/getTestFunctions.js'
 import { xmlString } from './utils/sampleXml.js'
 
 const scriptAndTestValues = fetchTestScriptAndValues(xmlString.bpmn)
-
-// console.log(getTestFunctions(scriptAndTestValues))
+const inputAndOutputValues = getInputAndOutputTestValues(scriptAndTestValues)

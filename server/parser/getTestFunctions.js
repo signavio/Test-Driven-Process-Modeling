@@ -48,10 +48,10 @@ const getVariableAndReturnValueFromScript = (testString) => {
  * @param {string} returnValue
  * @return {string}
  */
-const createFunctionString = (script, variable, returnValue) => {
-  const fnString = `const ${variable} = inputParam; \n
-   ${script}; \n
-   return ${returnValue}`
+const createFunctionString = (script, variable, out) => {
+  const fnString = `const ${variable} = inputParam; 
+    let ${out} = false; 
+    ${script} `
 
   return fnString
 }

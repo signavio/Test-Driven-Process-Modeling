@@ -1,4 +1,5 @@
 # SCM - Test-driven Smart Contract Modeling with Signavio Process Manager
+
 [![CircleCI](https://circleci.com/gh/signavio/SCM/tree/master.svg?style=svg&circle-token=63cd7782954c7d813d4527a5466c5bdc7493188d)](https://circleci.com/gh/signavio/SCM/tree/master)
 
 This project will contains a tool that allows for the seamless integration between Signavio Process Manager and a smart contract execution environment.
@@ -25,7 +26,7 @@ Following is the list of all the dependencies required for the execution of this
 
 1. ### Project files:
 
-- Make sure to have the latest version of Node Package Manager (npm) installed (https://nodejs.org/en/).
+- Make sure to have the latest version (v14.13.0 or above) of Node Package Manager (npm) installed (https://nodejs.org/en/).
 
 - Clone or download this repository to your local system.
 
@@ -43,7 +44,8 @@ Following is the list of all the dependencies required for the execution of this
 
 - Now login with the Signavio credentials and provide the revision ID of the diagram you want to deploy as smart contract. A sample revision ID is `20345a550b07426e890bd45320f7b8c7`.
 
-- The global variables should be in the following format. 
+- The global variables should be in the following format.
+
 ```
 uint userID; bool applicantEligible = false;
 ```
@@ -51,8 +53,10 @@ uint userID; bool applicantEligible = false;
 - Click _submit_ . The compiled details of the smart contract is then logged in the console(terminal).
 
 ## Model with Multiple script tasks:
+
 It is possible to deploy a model with multiple script tasks. A sample revision ID of a model with multiple XOR gateways - `3c05dda7ae85427ca3f0ac4ec5041f75`
-Corresponding global variables: 
+Corresponding global variables:
+
 ```
 uint userID; bool applicantEligible = false;
 ```
@@ -60,11 +64,10 @@ uint userID; bool applicantEligible = false;
 ## Note
 
 The test case in the script task must adhere to the following format.
+
 ```javascript
-if (userID >= 10) 
-applicantEligible = true; 
-else 
-applicantEligible = false;
+if (userID >= 10) return (applicantEligible = true)
+else return (applicantEligible = false)
 ```
 
 ## Credits
@@ -74,4 +77,3 @@ applicantEligible = false;
 - [TimKam](https://github.com/TimKam/)
 
 - [Matwog](https://github.com/Matwog)
-

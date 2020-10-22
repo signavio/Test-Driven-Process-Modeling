@@ -6,7 +6,7 @@ import convert from 'xml-js'
  * @return {object}
  */
 const fetchTestScriptAndValues = (xmlString) => {
-  let jsonDiagram = convert.xml2js(xmlString, { compact: true, spaces: 4 })
+  let jsonDiagram = convert.xml2js(xmlString, { compact: true })
 
   const scriptTasks = getScriptTasks(jsonDiagram)
 

@@ -2,10 +2,10 @@
  * This file will use the helper parsers to drive the test-driven approach
  */
 
-import fetchTestScriptAndValues from './parser/fetchTestScriptAndValues.js'
-import getInputAndOutputTestValues from './parser/getInputAndOutputTestValues.js'
-import getTestFunctions from './parser/getTestFunctions.js'
-import { xmlString, xmlFromEditor } from './utils/sampleXml.js'
+import fetchTestScriptAndValues from './parser/fetchTestScriptAndValues'
+import getInputAndOutputTestValues from './parser/getInputAndOutputTestValues'
+import getTestFunctions from './parser/getTestFunctions'
+import { xmlString, xmlFromEditor } from './utils/sampleXml'
 
 /**
  * This method takes the test functions and the input and output values and runs the values against the test function. If the test fails the count is incremented and returned. Based on this value the model can be either deployed to blockchain network or not.

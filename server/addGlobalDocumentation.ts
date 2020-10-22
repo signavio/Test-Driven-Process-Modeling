@@ -5,8 +5,8 @@ export const addGlobalDocumentation = (
   inputVariables,
   contractName
 ) => {
-  let jsonDiagram = convert.xml2js(xmlString, { compact: true, spaces: 4 })
-  let json2 = {}
+  let jsonDiagram: any = convert.xml2js(xmlString, { compact: true })
+  let json2: any = {}
 
   Object.keys(jsonDiagram.definitions.process).forEach((key) => {
     if (key == '_attributes') {

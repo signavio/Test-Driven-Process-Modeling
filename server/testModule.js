@@ -5,14 +5,7 @@
 import fetchTestScriptAndValues from './parser/fetchTestScriptAndValues.js'
 import getInputAndOutputTestValues from './parser/getInputAndOutputTestValues.js'
 import getTestFunctions from './parser/getTestFunctions.js'
-import { xmlString } from './utils/sampleXml.js'
-
-/**
- * Below lines of codes have to be run in sequence to get the necessary values and use it for the test module.
- */
-// const scriptAndTestValues = fetchTestScriptAndValues(xmlString.bpmn)
-// const inputAndOutputValues = getInputAndOutputTestValues(scriptAndTestValues)
-// const testFunctions = getTestFunctions(scriptAndTestValues)
+import { xmlString, xmlFromEditor } from './utils/sampleXml.js'
 
 /**
  * This method takes the test functions and the input and output values and runs the values against the test function. If the test fails the count is incremented and returned. Based on this value the model can be either deployed to blockchain network or not.
@@ -38,4 +31,21 @@ const getTestFailCount = (testFunctions, inputAndOutputValues) => {
     }
   }
   return testFailCount
+}
+
+export const hasTestPassed = (xmlString) => {
+  let hasTestPassed = false
+
+  const scriptAndTestValues = fetchTestScriptAndValues(xmlString.bpmn)
+  const inputAndOutputValues = getInputAndOutputTestValues(scriptAndTestValues)
+  const testFunctions = getTestFunctions(scriptAndTestValues)
+  const testFailCount = getTestFailCount(testFunctions, inputAndOutputValues)
+
+  if (testFailCount === 0) {
+    hasTestPassed = true
+  } else {
+    hasTestPassed = false
+  }
+
+  return hasTestPassed
 }

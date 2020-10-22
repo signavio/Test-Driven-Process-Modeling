@@ -54,11 +54,11 @@ uint userID; bool applicantEligible = false;
 
 ## Model with Multiple script tasks:
 
-It is possible to deploy a model with multiple script tasks. A sample revision ID of a model with multiple XOR gateways - `3c05dda7ae85427ca3f0ac4ec5041f75`
+It is possible to deploy a model with multiple script tasks. A sample revision ID of a model with multiple XOR gateways - `8dbfdea35e4749f9b786c068bcbfe804`
 Corresponding global variables:
 
 ```
-uint userID; bool applicantEligible = false;
+uint userID; bool applicantEligible = false; bool applicantEligibleAgain = false;
 ```
 
 ## Note

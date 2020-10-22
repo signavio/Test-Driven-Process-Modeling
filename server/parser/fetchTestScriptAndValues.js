@@ -22,8 +22,18 @@ const fetchTestScriptAndValues = (xmlString) => {
 const getScriptTasks = (jsonDiagram) =>
   jsonDiagram?.definitions?.process?.scriptTask
 
-const getTestScript = (task) => task.script['_cdata']
+const getTestScript = (task) => {
+  const metaData = task.extensionElements['signavio:signavioMetaData']
 
+  const testFunction = metaData.reduce((testFunction, attribute) => {
+    if (isAttributeMetaTestFunction(attribute)) {
+      testFunction = attribute._attributes.metaValue
+    }
+    return testFunction
+  })
+
+  return testFunction
+}
 const getTestValues = (task) => {
   const metaData = task.extensionElements['signavio:signavioMetaData']
 
@@ -39,5 +49,8 @@ const getTestValues = (task) => {
 
 const isAttributeMetaTestValues = (attribute) =>
   attribute._attributes.metaKey === 'meta-testvalues'
+
+const isAttributeMetaTestFunction = (attribute) =>
+  attribute._attributes.metaKey === 'meta-testfunction'
 
 export default fetchTestScriptAndValues

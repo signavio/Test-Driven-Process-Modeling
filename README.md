@@ -11,8 +11,9 @@
 3. [Modeling Guide](#modelingguide)
 4. [Installation](#installation)
 5. [Usage](#usage)
-6. [Credits](#credits)
-7. [License](#license)
+6. [Roadmap](#roadmap)
+7. [Credits](#credits)
+8. [License](#license)
 
 ## Motivation
 
@@ -120,9 +121,14 @@ uint userID; bool applicantEligible = false; bool applicantEligibleAgain = false
 
 - Click _submit_ . The compiled details of the smart contract is then logged in the console(terminal).
 
+## Roadmap
+
+- Move the tool to a React + Typescript based Single page application.
+- Extend the tool to support BPMN diagrams modeled using other Modeling platforms as it currently only supports models modeled using Signavio Process Manager.
+
 ## Credits
 
-### Authors
+## Authors
 
 - [TimKam](https://github.com/TimKam/)
 

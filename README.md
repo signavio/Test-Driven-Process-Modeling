@@ -16,6 +16,7 @@
 8. [License](#license)
 
 ## Motivation:bulb:
+
 The main motivation behind the conception of this tool is to provide an interface to test the correctness and integrity of a business process model before it is compiled and deployed to the blockchain network. This pre-check could potentially avoid the risk of deploying a smart contract with errors. The tool also embraces the [Test driven development](https://en.wikipedia.org/wiki/Test-driven_development) process in the business process modelling.
 
 ## Prerequisites:memo:
@@ -41,7 +42,7 @@ if (userID >= 10) applicantEligible = true
 else applicantEligible = false
 ```
 
-- Create a custom attributes on BPMN task called "Test values" of type "Table" with columns "inputs" and "outputs" as shown in this image ![alt Test values custom attribute](https://github.com/signavio/Test-Driven-Process-Modeling/blob/master/Images/Test%20Values%20attribute.png).
+- Create a custom attributes on BPMN task called "Test values" of type "Table" with columns "inputs" and "outputs" as shown in this image ![alt Test values custom attribute](https://github.com/signavio/Test-Driven-Process-Modeling/blob/master/images/Test%20Values%20attribute.png).
 - On your script task, provide the input and output values using this "Test values" custom attribute. For example input could be `userID = 5` and output could be `applicantEligible = false`.
 - So in summary, your corresponding input and expected output values should go inside this table, i.e, the custom attribute "Test values".
 - Create another custom attribute on BPMN task called "Test function" of type "Multi-line text" for the BPMN task.
@@ -62,7 +63,7 @@ return applicantEligible
 2. #### Configuring Gateways and Sequence flows
 
 - All the gateways used in the model should be uniquely named.
-- All the sequence flows should be correctly named as shown in the below ![alt sample model](https://github.com/signavio/Test-Driven-Process-Modeling/blob/master/Images/sample%20model.png).
+- All the sequence flows should be correctly named as shown in the below ![alt sample model](https://github.com/signavio/Test-Driven-Process-Modeling/blob/master/images/sample%20model.png).
 - For example, in this sample model the script task "Check userID" has the custom attribute "Test function" value as
 
 ```javascript

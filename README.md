@@ -1,9 +1,8 @@
-# SCM - Test-driven Smart Contract Modeling with Signavio Process Manager
+# TD-SCM - Test-driven Smart Contract Modeling with Signavio Process Manager
 
 [![CircleCI](https://circleci.com/gh/signavio/SCM/tree/master.svg?style=svg&circle-token=63cd7782954c7d813d4527a5466c5bdc7493188d)](https://circleci.com/gh/signavio/SCM/tree/master)
 
-This project will contains a tool that allows for the seamless integration between Signavio Process Manager and a smart contract execution environment.
-The component allows business user-friendly test-driven smart contract modeling and management.
+:dart: TD-SCM is a tool that provides the user a platform to compile business process models to smart contract that can be deployed to a blockchain network using the test-driven approach.
 
 ## Table of Contents
 

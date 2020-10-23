@@ -122,8 +122,8 @@ uint userID; bool applicantEligible = false; bool applicantEligibleAgain = false
 
 ## Roadmap:checkered_flag:
 
-- :pushpin:Move the tool to a React + Typescript based Single page application.
-- :pushpin:Extend the tool to support BPMN diagrams modeled using other Modeling platforms as it currently only supports models modeled using Signavio Process Manager.
+- 📍 Move the tool to a React + Typescript based Single page application.
+- 📍 Extend the tool to support BPMN diagrams modeled using other Modeling platforms as it currently only supports models modeled using Signavio Process Manager.
 
 ## Credits
 

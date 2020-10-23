@@ -4,7 +4,7 @@
 
 :dart: TD-SCM is a tool that provides the user a platform to compile business process models to smart contract that can be deployed to a blockchain network using the test-driven approach.
 
-## Table of Contents
+## Table of Contents:scroll:
 
 1. [Motivation](#motivation)
 2. [Prerequisites](#prerequisites)
@@ -15,16 +15,15 @@
 7. [Credits](#credits)
 8. [License](#license)
 
-## Motivation
+## Motivation:bulb:
+The main motivation behind the conception of this tool is to provide an interface to test the correctness and integrity of a business process model before it is compiled and deployed to the blockchain network. This pre-check could potentially avoid the risk of deploying a smart contract with errors. The tool also embraces the [Test driven development](https://en.wikipedia.org/wiki/Test-driven_development) process in the business process modelling.
 
-:bulb: The main motivation behind the conception of this tool is to provide an interface to test the correctness and integrity of a business process model before it is compiled and deployed to the blockchain network. This pre-check could potentially avoid the risk of deploying a smart contract with errors. The tool also embraces the [Test driven development](https://en.wikipedia.org/wiki/Test-driven_development) process in the business process modelling.
-
-## Prerequisites
+## Prerequisites:memo:
 
 1. The project uses the latest version of [yarn](https://yarnpkg.com/) and [node](https://nodejs.org/en/) (v14.13.0 or above).
 2. Please follow the steps provided in the [modeling guide](##modelingguide) to model the BPMN diagram in the way that this tool expects to so that the compilation to smart contracts is easily carried out.
 
-## Modeling Guide
+## Modeling Guide:closed_book:
 
 ### Using Signavio Process Manager
 
@@ -96,13 +95,13 @@ return applicantEligible
 
 - As we have seen from our example model that we use variables such as `uint userID` and `bool applicantEligible`. These variables have to be declared to be understood by the compiler. The TD-SCM tool provides an interface where these variables must be declared.
 
-## Installation
+## Installation:electric_plug:
 
 - Clone or download this repository to your local system.
 - Open your terminal and `cd` into the project folder and run the command `yarn install`. This will install all the required dependencies.
 - Run `yarn start` and this starts the application at http://localhost:4000. Now we are good to go :rocket:
 
-## Usage
+## Usage:computer:
 
 - The tool provides exposes an interface for the user to login using their Signavio credentials.
 - The user is required to provide the _revision ID_ of the BPMN diagram, _global variables_ and _contract name_.
@@ -121,14 +120,14 @@ uint userID; bool applicantEligible = false; bool applicantEligibleAgain = false
 
 - Click _submit_ . The compiled details of the smart contract is then logged in the console(terminal).
 
-## Roadmap
+## Roadmap:checkered_flag:
 
 - Move the tool to a React + Typescript based Single page application.
 - Extend the tool to support BPMN diagrams modeled using other Modeling platforms as it currently only supports models modeled using Signavio Process Manager.
 
 ## Credits
 
-## Authors
+## Authors:bust_in_silhouette:
 
 - [TimKam](https://github.com/TimKam/)
 

@@ -2,13 +2,14 @@ import express from 'express'
 import { join } from 'path'
 import { urlencoded, json } from 'body-parser'
 import cookieParser from 'cookie-parser'
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { stringify } from 'qs'
-import { addGlobalDocumentation } from './preProcessingModule.js'
+import { addGlobalDocumentation } from './server/addGlobalDocumentation'
 import { compile } from 'bpmn-sol'
-import { hasTestPassed } from './server/testModule.js'
+import { hasTestPassed } from './server/testModule'
 import beautify from 'js-beautify'
 import path from 'path'
+import Axios from 'axios'
 
 const app = express()
 const port = process.env.PORT || 4000
@@ -66,7 +67,7 @@ app.post('/engine', async (req, res, next) => {
 
     fetchXML(cookieData)
 
-    async function fetchXML(cookieData) {
+    async function fetchXML(cookieData: any) {
       let temp1 = String(cookieData[0]).split(';')
       let jID = String(temp1[0]).split('=')
       let jsesssion_ID = jID[1]
@@ -85,7 +86,7 @@ app.post('/engine', async (req, res, next) => {
       let cookies = { JSESSIONID: jsesssion_ID, LBROUTEID: lb_route_ID }
       let headers = { Accept: 'application/json', 'x-signavio-id': auth_token }
 
-      let options = {
+      let options: AxiosRequestConfig = {
         method: 'GET',
         url: diagram_url,
         headers: {
@@ -100,7 +101,8 @@ app.post('/engine', async (req, res, next) => {
         },
       }
 
-      xmlDiagram = await axios(options)
+      xmlDiagram = await axios
+        .request(options)
         .then(function (response) {
           return response.data
         })
@@ -115,7 +117,7 @@ app.post('/engine', async (req, res, next) => {
       )
       const successFlag = hasTestPassed(xmlWithGlobalVariables)
       if (successFlag) {
-        const contract = compile(xmlWithGlobalVariables).then((contract) => {
+        compile(xmlWithGlobalVariables).then((contract: any) => {
           console.log(
             'Solidity Smart Contract:',
             beautify(contract.Solidity, {

@@ -32,12 +32,20 @@ text-align:center;
 color: #096e75;
 font-family: "Titillium Web",sans-serif;
 `
-const ModeSelection: React.FC = () => {
+
+type Mode = 'USE_SIGNAVIO' | 'USE_FILE_UPLOAD' | null
+
+type Props = {
+    mode: Mode
+    changeMode: (incomingMode: Mode) => void
+}
+
+const ModeSelection: React.FC<Props> = ({ mode, changeMode }) => {
     return (
         <Container>
             <Heading>Choose your mode for importing the BPMN 2.0 XMl file</Heading>
-            <ModeButton>Login with Signavio</ModeButton>
-            <ModeButton>Use file upload</ModeButton>
+            <ModeButton onClick={() => changeMode('USE_SIGNAVIO')}>Login with Signavio</ModeButton>
+            <ModeButton onClick={() => changeMode('USE_FILE_UPLOAD')}>Use file upload</ModeButton>
         </Container>
     )
 }

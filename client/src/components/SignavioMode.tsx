@@ -8,7 +8,7 @@ flex-direction: column;
 margin-top: 100px;
 justify-content:baseline;
 width:90%;
-height: 50%;
+height: 60%;
 align-items: center;
 background-color:#096e75;
 border-radius: 8px;

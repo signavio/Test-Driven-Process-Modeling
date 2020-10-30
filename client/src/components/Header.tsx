@@ -8,7 +8,6 @@ const HeaderStyle = styled.div`
     height: 56px;
     top:0;
     width:100%;
-    position:absolute;
     border-style: solid;
     margin-top:0;
     border-width: 0;
@@ -17,10 +16,10 @@ const HeaderStyle = styled.div`
 
 const Heading = styled.h2`
     margin-right: 50px;
-    margin-left: 10px;
+    margin-left: 50px;
     color: white;
-    font-size: 16px;
-    font-family:sans-serif
+    font-size: large;
+    font-family: "Titillium Web",sans-serif;
 `
 
 const Header: React.FC = () => {

@@ -13,12 +13,18 @@ align-items: center;
 
 const ModeButton = styled.button`
     background-color:#096e75;
+    border-color: #096e75;
+    border-radius: 8px;
     color:white;
     height:50px;
     font-size: medium;
     cursor: pointer;
     width:90%;
     margin-bottom:10px;
+    &:hover {
+    transition: all .2s ease 0s;
+    background-color: #00a7ac;
+    }
 `
 
 const Heading = styled.h4`

@@ -8,33 +8,32 @@ import { addGlobalDocumentation } from './server/addGlobalDocumentation'
 import { compile } from 'bpmn-sol'
 import { hasTestPassed } from './server/testModule'
 import beautify from 'js-beautify'
+import bodyParser from 'body-parser'
+import helmet from 'helmet'
 import path from 'path'
 import Axios from 'axios'
 
-const app = express()
-const port = process.env.PORT || 4000
+const app: express.Application = express()
+const PORT = process.env.PORT || 8080
+const HOST = process.env.HOST || 'http://127.0.0.1:8080/'
+
+
+app.use(express.static(`${path.resolve("./")}/client/build`))
+app.use(bodyParser.json())
+app.use(helmet())
 app.use(cookieParser())
 
-app.set('views', join(`${path.resolve('./')}`, 'views'))
-app.set('view engine', 'pug')
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", HOST); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next()
+})
+
 
 app.use(urlencoded({ extended: false }))
 app.use(json())
-app.use(express.static(join(`${path.resolve('./')}`, 'public')))
 
-app.get('/', (req, res) => {
-  res.render('home', {
-    title: '',
-  })
-})
-
-app.get('/engine', (req, res) => {
-  res.render('engine', {
-    title: 'Please login with your Signavio credentials and Diagram ID',
-  })
-})
-
-app.post('/engine', async (req, res, next) => {
+app.post('/submit', async (req, res, next) => {
   var jsonDiagram
   var xmlDiagram
 
@@ -146,17 +145,8 @@ app.post('/engine', async (req, res, next) => {
   authenticate()
 })
 
-app.get('/result', (req, res) => {
-  res.render('result', {
-    title:
-      'The Test has passed and diagram has been successfully compiled to smart contract',
-  })
+app.get('*', (req, res) => {
+  res.sendFile(`${path.resolve('./')}/client/build/index.html`)
 })
 
-app.get('/error', (req, res) => {
-  res.render('error', {
-    title: 'The Test has failed',
-  })
-})
-
-app.listen(port, () => console.log(`app listening on port ${port}`))
+app.listen(PORT, () => console.log(`app listening on port ${PORT}`))

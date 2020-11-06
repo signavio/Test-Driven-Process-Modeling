@@ -19,7 +19,6 @@ margin-top:10px;
 display: flex;
 flex-direction: column;
 align-items:flex-end;
-/* justify-content:space-around; */
 `
 
 const InputStyle = styled.input`

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -58,9 +58,15 @@ const SubmitButton = styled.input`
 `
 
 const SignavioMode: React.FC = () => {
+
+    const handleFormSubmit = (event: React.FormEvent) => {
+        event.preventDefault()
+        // To-do POST the credentials to the Signavio server and fetch the diagram xml
+        // Then pass the details to the test module and then compile
+    }
     return (
         <Container>
-            <FormStyle>
+            <FormStyle onSubmit={handleFormSubmit}>
                 <LabelStyle>Username:
                     <InputStyle type="text"></InputStyle>
                 </LabelStyle>
@@ -77,12 +83,7 @@ const SignavioMode: React.FC = () => {
                     <InputStyle type="text"></InputStyle>
                 </LabelStyle>
 
-                <SubmitButton type="submit" value="Submit" onClick={(event: React.FormEvent) => {
-                    event.preventDefault()
-                    // To-do POST the credentials to the Signavio server and fetch the diagram xml
-                    // Then pass the details to the test module and then compile
-
-                }}></SubmitButton>
+                <SubmitButton type="submit" value="Submit" />
             </FormStyle>
         </Container>
     )

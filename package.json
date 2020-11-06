@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "npx ts-node index.ts"
+    "start": "npx ts-node index.ts",
+    "build": "npx tsc",
+    "start-client": "cd ./client && yarn start",
+    "build-client": "cd ./client && yarn build"
   },
   "author": "Gowtham",
   "license": "ISC",
@@ -20,6 +23,7 @@
     "bpmn-sol": "^1.0.0",
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
+    "helmet": "^4.2.0",
     "js-beautify": "^1.12.0",
     "kill-port": "^1.5.1",
     "kind-of": "^6.0.3",

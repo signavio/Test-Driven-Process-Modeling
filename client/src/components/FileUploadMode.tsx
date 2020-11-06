@@ -58,9 +58,13 @@ const SubmitButton = styled.input`
 
 
 const FileUpload: React.FC = () => {
+
+    const handleFormSubmit = (event: React.FormEvent) => {
+        event.preventDefault()
+    }
     return (
         <Container>
-            <FormStyle>
+            <FormStyle onSubmit={handleFormSubmit}>
                 <InputStyle type="file"></InputStyle>
                 <SubmitButton type="submit" value="Upload" />
             </FormStyle>

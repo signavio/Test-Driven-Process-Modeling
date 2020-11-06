@@ -25,10 +25,9 @@ align-items:flex-end;
 const InputStyle = styled.input`
     border-radius:8px;
     border:darkgray;
-    padding:10px;
+    padding:15px;
     background-color:cadetblue;
     color:white;
-    height:30px;
     cursor: pointer;
     font-size:medium;
     font-family: "Titillium Web",sans-serif;

@@ -45,18 +45,20 @@ const InputStyle = styled.input`
 const SubmitButton = styled.input`
     border-radius: 8px;
     margin:10px;
-    color:#096e75;
-    height:30px;
+    border-color:cadetblue;
+    background-color:cadetblue;
+    color:white;
+    width:90px;
+    height:40px;
     font-size:medium;
-    font-weight:600;
+    font-weight:500;
     cursor: pointer;
     font-family: "Titillium Web",sans-serif;
     &:hover {
     transition: all .2s ease 0s;
-    background-color: #92cdc0;
+    background-color: #5f947a;
     }
 `
-
 const SignavioMode: React.FC = () => {
 
     const handleFormSubmit = (event: React.FormEvent) => {

@@ -23,7 +23,7 @@ const ModeButton = styled.button`
     margin-bottom:10px;
     &:hover {
     transition: all .2s ease 0s;
-    background-color: #00a7ac;
+    background-color: #5f947a;
     }
 `
 

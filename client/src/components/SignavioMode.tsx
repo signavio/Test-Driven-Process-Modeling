@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -42,13 +42,13 @@ const InputStyle = styled.input`
     }
 `
 
-const SubmitButton = styled.input`
+const SubmitButton = styled.button`
     border-radius: 8px;
     margin:10px;
     border-color:cadetblue;
     background-color:cadetblue;
     color:white;
-    width:90px;
+    width:130px;
     height:40px;
     font-size:medium;
     font-weight:500;
@@ -57,37 +57,127 @@ const SubmitButton = styled.input`
     &:hover {
     transition: all .2s ease 0s;
     background-color: #5f947a;
+    } 
+    &:disabled {
+        transition: all .2s ease 0s;
+        background-color: #5f947a; 
+        cursor:default
     }
 `
+
+
+const ErrorText = styled.p`
+    color: red;
+    font-weight:500;
+    font-size:medium;
+    font-family: "Titillium Web",sans-serif;
+
+`
+
+type AuthenticationStateType = {
+    username: string
+    password: string
+    revisionId: string
+    globalVariables: string
+    contractName: string
+    isLogging: boolean
+    isError: boolean
+}
+type AuthenticationActionType = { type: 'SUBMIT' | 'ERROR' } | {
+    type: 'FIELD'
+    payload: string
+    fieldName: string
+}
+
+const initialState: AuthenticationStateType = {
+    username: '',
+    password: '',
+    revisionId: '',
+    globalVariables: '',
+    contractName: '',
+    isLogging: false,
+    isError: false
+}
+
+
+const authenticateReducer = (state = initialState, action: AuthenticationActionType) => {
+    switch (action.type) {
+        case 'FIELD':
+            return ({
+                ...state,
+                [action.fieldName]: action.payload
+            })
+        case 'SUBMIT':
+            return ({
+                ...state,
+                isLogging: true,
+                isError: false
+
+            })
+        case 'ERROR':
+            return ({
+                ...state,
+                username: '',
+                password: '',
+                revisionId: '',
+                globalVariables: '',
+                contractName: '',
+                isLogging: false,
+                isError: true
+            })
+
+        default:
+            break;
+    }
+}
 const SignavioMode: React.FC = () => {
+
+    const [state, dispatch] = useReducer(authenticateReducer, initialState)
 
     const handleFormSubmit = (event: React.FormEvent) => {
         event.preventDefault()
-        // To-do POST the credentials to the Signavio server and fetch the diagram xml
-        // Then pass the details to the test module and then compile
+        dispatch({
+            type: "SUBMIT"
+        })
+
+    }
+
+    const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch({
+            type: 'FIELD',
+            fieldName: event.target.name,
+            payload: event.target.value
+        })
     }
     return (
         <Container>
             <FormStyle onSubmit={handleFormSubmit}>
                 <LabelStyle>Username:
-                    <InputStyle type="text"></InputStyle>
+                    <InputStyle type="text" name="username" value={state?.username} onChange={handleFieldChange} ></InputStyle>
                 </LabelStyle>
                 <LabelStyle>Password:
-                    <InputStyle type="password"></InputStyle>
+                    <InputStyle type="password" name="password" value={state?.password} onChange={handleFieldChange}></InputStyle>
                 </LabelStyle>
                 <LabelStyle>Revision ID:
-                    <InputStyle type="text"></InputStyle>
+                    <InputStyle type="text" name="revisionId" value={state?.revisionId} onChange={handleFieldChange}></InputStyle>
                 </LabelStyle>
                 <LabelStyle>Global variables:
-                    <InputStyle type="text"></InputStyle>
+                    <InputStyle type="text" name="globalVariables" value={state?.globalVariables}
+                        onChange={handleFieldChange}></InputStyle>
                 </LabelStyle>
                 <LabelStyle>Contract Name:
-                    <InputStyle type="text"></InputStyle>
+                    <InputStyle type="text" name="contractName" value={state?.contractName} onChange={handleFieldChange}></InputStyle>
                 </LabelStyle>
 
-                <SubmitButton type="submit" value="Submit" />
+                <SubmitButton type="submit" disabled={state?.isLogging}>
+                    {state?.isLogging ? 'Authenticating...' : 'Authenticate'}
+                </SubmitButton>
+
+                {state?.isError
+                    ? <ErrorText>Error Authenticating. Please check your credentials.</ErrorText>
+                    : null}
             </FormStyle>
-        </Container>
+        </Container >
     )
 }
 

@@ -1,5 +1,7 @@
 import React, { useReducer } from 'react'
 import styled from 'styled-components'
+import authenticateUser from '../api/authenticateUser'
+import getCookieFromSignavio from '../api/getCookieFromSignavio'
 
 const Container = styled.div`
 margin-left:25px;
@@ -134,11 +136,32 @@ const SignavioMode: React.FC = () => {
 
     const [state, dispatch] = useReducer(authenticateReducer, initialState)
 
-    const handleFormSubmit = (event: React.FormEvent) => {
+    const handleFormSubmit = async (event: React.FormEvent) => {
+
         event.preventDefault()
         dispatch({
             type: "SUBMIT"
         })
+
+        const { username,
+            password,
+            revisionId,
+            globalVariables,
+            contractName } = state!
+
+        const data = {
+            username, password,
+            revisionId,
+            globalVariables,
+            contractName
+        }
+
+        try {
+            const { status } = await authenticateUser(data)
+        } catch (error) {
+            console.log(error)
+        }
+
 
     }
 

@@ -176,7 +176,9 @@ const SignavioMode: React.FC = () => {
             const { status, data } = await authenticateUser(formData)
             setContract(data)
         } catch (error) {
-            console.log(error)
+            dispatch({
+                type: "ERROR"
+            })
         }
 
 
@@ -218,23 +220,23 @@ const SignavioMode: React.FC = () => {
                     </SubmitButton>
 
                     {state?.isError
-                        ? <ErrorText>Error Authenticating. Please check your credentials.</ErrorText>
+                        ? <ErrorText>Error Authenticating. Please check your credentials and diagram details.</ErrorText>
                         : null}
                 </FormStyle>}
 
             {contract
                 ? <Fragment>
-                    <Details>Solidity code:</Details>
+                    <Details>Solidity code</Details>
                     <DisplayContract codeBlock={contract.Solidity} type='SOLIDITY' />
                 </Fragment> : null}
             {contract
                 ? <Fragment>
-                    <Details>ABI:</Details>
+                    <Details>ABI</Details>
                     <DisplayContract codeBlock={contract.ABI} type='ABI' />
                 </Fragment> : null}
             {contract
                 ? <Fragment>
-                    <Details>Bytecode:</Details>
+                    <Details>Bytecode</Details>
                     <DisplayContract codeBlock={contract.Bytecode} type='BYTECODE' />
                 </Fragment>
                 : null}

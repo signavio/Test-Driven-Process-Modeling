@@ -17,7 +17,7 @@ const authenticateUser = async (data: RequestData) => {
             data: JSON.stringify(data)
         })
 
-        return response
+        return response.data
     } catch (error) {
         throw error
     }

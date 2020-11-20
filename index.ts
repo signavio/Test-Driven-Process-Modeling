@@ -65,7 +65,7 @@ app.post('/submit', async (req, res, next) => {
           space_in_empty_paren: true,
         }))
 
-      res.send({ status: 200, message: 'Success' })
+      res.send({ status: 200, message: 'Success', data: contract })
     } else {
       res.send({ status: 500, message: 'Tests failed' })
     }

@@ -1,7 +1,7 @@
-import React, { useReducer } from 'react'
+import React, { Fragment, ReactElement, useReducer, useState } from 'react'
 import styled from 'styled-components'
 import authenticateUser from '../api/authenticateUser'
-import getCookieFromSignavio from '../api/getCookieFromSignavio'
+import DisplayContract from './DisplayContract'
 
 const Container = styled.div`
 margin-left:25px;
@@ -76,6 +76,14 @@ const ErrorText = styled.p`
 
 `
 
+const Details = styled.label`
+    color: white;
+    margin-top: 10px;
+    font-size: large;
+    font-weight: 550;
+    font-family: "Titillium Web", sans-serif;
+`
+
 type AuthenticationStateType = {
     username: string
     password: string
@@ -132,9 +140,17 @@ const authenticateReducer = (state = initialState, action: AuthenticationActionT
             break;
     }
 }
+
+
+type ContractType = {
+    ABI: string
+    Bytecode: string
+    Solidity: string
+}
 const SignavioMode: React.FC = () => {
 
     const [state, dispatch] = useReducer(authenticateReducer, initialState)
+    const [contract, setContract] = useState<ContractType | null>(null)
 
     const handleFormSubmit = async (event: React.FormEvent) => {
 
@@ -149,7 +165,7 @@ const SignavioMode: React.FC = () => {
             globalVariables,
             contractName } = state!
 
-        const data = {
+        const formData = {
             username, password,
             revisionId,
             globalVariables,
@@ -157,7 +173,8 @@ const SignavioMode: React.FC = () => {
         }
 
         try {
-            const { status } = await authenticateUser(data)
+            const { status, data } = await authenticateUser(formData)
+            setContract(data)
         } catch (error) {
             console.log(error)
         }
@@ -172,36 +189,58 @@ const SignavioMode: React.FC = () => {
             payload: event.target.value
         })
     }
+
+
     return (
         <Container>
-            <FormStyle onSubmit={handleFormSubmit}>
-                <LabelStyle>Username:
-                    <InputStyle type="text" name="username" value={state?.username} onChange={handleFieldChange} ></InputStyle>
-                </LabelStyle>
-                <LabelStyle>Password:
-                    <InputStyle type="password" name="password" value={state?.password} onChange={handleFieldChange}></InputStyle>
-                </LabelStyle>
-                <LabelStyle>Revision ID:
-                    <InputStyle type="text" name="revisionId" value={state?.revisionId} onChange={handleFieldChange}></InputStyle>
-                </LabelStyle>
-                <LabelStyle>Global variables:
-                    <InputStyle type="text" name="globalVariables" value={state?.globalVariables}
-                        onChange={handleFieldChange}></InputStyle>
-                </LabelStyle>
-                <LabelStyle>Contract Name:
-                    <InputStyle type="text" name="contractName" value={state?.contractName} onChange={handleFieldChange}></InputStyle>
-                </LabelStyle>
+            {contract
+                ? null
+                : <FormStyle onSubmit={handleFormSubmit}>
+                    <LabelStyle>Username:
+                <InputStyle type="text" name="username" value={state?.username} onChange={handleFieldChange} ></InputStyle>
+                    </LabelStyle>
+                    <LabelStyle>Password:
+                <InputStyle type="password" name="password" value={state?.password} onChange={handleFieldChange}></InputStyle>
+                    </LabelStyle>
+                    <LabelStyle>Revision ID:
+                <InputStyle type="text" name="revisionId" value={state?.revisionId} onChange={handleFieldChange}></InputStyle>
+                    </LabelStyle>
+                    <LabelStyle>Global variables:
+                <InputStyle type="text" name="globalVariables" value={state?.globalVariables}
+                            onChange={handleFieldChange}></InputStyle>
+                    </LabelStyle>
+                    <LabelStyle>Contract Name:
+                <InputStyle type="text" name="contractName" value={state?.contractName} onChange={handleFieldChange}></InputStyle>
+                    </LabelStyle>
 
-                <SubmitButton type="submit" disabled={state?.isLogging}>
-                    {state?.isLogging ? 'Authenticating...' : 'Authenticate'}
-                </SubmitButton>
+                    <SubmitButton type="submit" disabled={state?.isLogging}>
+                        {state?.isLogging ? 'Authenticating...' : 'Authenticate'}
+                    </SubmitButton>
 
-                {state?.isError
-                    ? <ErrorText>Error Authenticating. Please check your credentials.</ErrorText>
-                    : null}
-            </FormStyle>
+                    {state?.isError
+                        ? <ErrorText>Error Authenticating. Please check your credentials.</ErrorText>
+                        : null}
+                </FormStyle>}
+
+            {contract
+                ? <Fragment>
+                    <Details>Solidity code:</Details>
+                    <DisplayContract codeBlock={contract.Solidity} type='SOLIDITY' />
+                </Fragment> : null}
+            {contract
+                ? <Fragment>
+                    <Details>ABI:</Details>
+                    <DisplayContract codeBlock={contract.ABI} type='ABI' />
+                </Fragment> : null}
+            {contract
+                ? <Fragment>
+                    <Details>Bytecode:</Details>
+                    <DisplayContract codeBlock={contract.Bytecode} type='BYTECODE' />
+                </Fragment>
+                : null}
         </Container >
     )
 }
 
 export default SignavioMode
+

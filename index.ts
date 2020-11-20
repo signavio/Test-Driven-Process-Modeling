@@ -42,36 +42,26 @@ app.post('/submit', async (req, res, next) => {
 
   try {
     const cookieData = await fetchCookie({ name: username, password: password, tokenonly: 'true' })
-    const diagramXml = await fetchDiagramXml({ revisionId, ...getCookieDetails(cookieData) })
-    let xmlWithGlobalVariables = addGlobalDocumentation(
-      diagramXml,
-      globalVariables,
-      contractName
-    )
-    const successFlag = hasTestPassed(xmlWithGlobalVariables)
-    if (successFlag) {
-      const contract: any = await compile(xmlWithGlobalVariables)
-      console.log(
-        'Solidity Smart Contract:',
-        beautify(contract.Solidity, {
-          indent_size: 2,
-          space_in_empty_paren: true,
-        })
+    try {
+      const diagramXml = await fetchDiagramXml({ revisionId, ...getCookieDetails(cookieData) })
+      let xmlWithGlobalVariables = addGlobalDocumentation(
+        diagramXml,
+        globalVariables,
+        contractName
       )
-      console.log(
-        'ABI:',
-        beautify(contract.ABI, {
-          indent_size: 2,
-          space_in_empty_paren: true,
-        }))
-
-      res.send({ status: 200, message: 'Success', data: contract })
-    } else {
-      res.send({ status: 500, message: 'Tests failed' })
+      const successFlag = hasTestPassed(xmlWithGlobalVariables)
+      if (successFlag) {
+        const contract: any = await compile(xmlWithGlobalVariables)
+        res.send({ status: 200, message: 'Success', data: contract })
+      } else {
+        res.send({ status: 500, message: 'Tests failed. Please check the diagram details.' })
+      }
+    } catch (error) {
+      res.send({ status: 404, message: 'Error while fetching diagram. Please provide the correct diagram details' })
     }
   }
   catch (error) {
-    res.send(error)
+    res.send({ status: 401, message: 'Error authenticating. Please check your credentials.' })
   }
 })
 

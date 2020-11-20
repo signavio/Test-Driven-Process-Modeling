@@ -70,9 +70,10 @@ const SubmitButton = styled.button`
 
 const ErrorText = styled.p`
     color: red;
-    font-weight:500;
-    font-size:medium;
-    font-family: "Titillium Web",sans-serif;
+    font-weight: 500;
+    font-size: large;
+    font-family: "Titillium Web", sans-serif;
+    text-align: center;
 
 `
 
@@ -92,13 +93,13 @@ type AuthenticationStateType = {
     contractName: string
     isLogging: boolean
     isError: boolean
+    errorMessage: string
 }
-type AuthenticationActionType = { type: 'SUBMIT' | 'ERROR' } | {
-    type: 'FIELD'
+type AuthenticationActionType = { type: 'SUBMIT' } | {
+    type: 'FIELD' | 'ERROR'
     payload: string
     fieldName: string
 }
-
 const initialState: AuthenticationStateType = {
     username: '',
     password: '',
@@ -106,7 +107,8 @@ const initialState: AuthenticationStateType = {
     globalVariables: '',
     contractName: '',
     isLogging: false,
-    isError: false
+    isError: false,
+    errorMessage: ''
 }
 
 
@@ -133,7 +135,8 @@ const authenticateReducer = (state = initialState, action: AuthenticationActionT
                 globalVariables: '',
                 contractName: '',
                 isLogging: false,
-                isError: true
+                isError: true,
+                errorMessage: action.payload
             })
 
         default:
@@ -172,16 +175,18 @@ const SignavioMode: React.FC = () => {
             contractName
         }
 
-        try {
-            const { status, data } = await authenticateUser(formData)
+
+        const response = await authenticateUser(formData)
+        const { status, message, data } = response.data
+        if (status === 200) {
             setContract(data)
-        } catch (error) {
+        } else {
             dispatch({
-                type: "ERROR"
+                type: 'ERROR',
+                fieldName: 'errorMessage',
+                payload: message
             })
         }
-
-
     }
 
     const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,30 +204,29 @@ const SignavioMode: React.FC = () => {
                 ? null
                 : <FormStyle onSubmit={handleFormSubmit}>
                     <LabelStyle>Username:
-                <InputStyle type="text" name="username" value={state?.username} onChange={handleFieldChange} ></InputStyle>
+                <InputStyle type="text" required name="username" value={state?.username} onChange={handleFieldChange} ></InputStyle>
                     </LabelStyle>
                     <LabelStyle>Password:
-                <InputStyle type="password" name="password" value={state?.password} onChange={handleFieldChange}></InputStyle>
+                <InputStyle type="password" required name="password" value={state?.password} onChange={handleFieldChange}></InputStyle>
                     </LabelStyle>
                     <LabelStyle>Revision ID:
-                <InputStyle type="text" name="revisionId" value={state?.revisionId} onChange={handleFieldChange}></InputStyle>
+                <InputStyle type="text" required name="revisionId" value={state?.revisionId} onChange={handleFieldChange}></InputStyle>
                     </LabelStyle>
                     <LabelStyle>Global variables:
-                <InputStyle type="text" name="globalVariables" value={state?.globalVariables}
+                <InputStyle type="text" required name="globalVariables" value={state?.globalVariables}
                             onChange={handleFieldChange}></InputStyle>
                     </LabelStyle>
                     <LabelStyle>Contract Name:
-                <InputStyle type="text" name="contractName" value={state?.contractName} onChange={handleFieldChange}></InputStyle>
+                <InputStyle type="text" required name="contractName" value={state?.contractName} onChange={handleFieldChange}></InputStyle>
                     </LabelStyle>
 
                     <SubmitButton type="submit" disabled={state?.isLogging}>
                         {state?.isLogging ? 'Authenticating...' : 'Authenticate'}
                     </SubmitButton>
-
-                    {state?.isError
-                        ? <ErrorText>Error Authenticating. Please check your credentials and diagram details.</ErrorText>
-                        : null}
                 </FormStyle>}
+            {state?.isError
+                ? <ErrorText>{state.errorMessage}</ErrorText>
+                : null}
 
             {contract
                 ? <Fragment>

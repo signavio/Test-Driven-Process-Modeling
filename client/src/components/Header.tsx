@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 
-const HeaderStyle = styled.div`
+const HeaderStyle = styled.a`
     display: flex;
     align-items: center;
     height: 56px;
@@ -12,7 +12,8 @@ const HeaderStyle = styled.div`
     margin-top:0;
     border-width: 0;
     border-color: #777777; 
-    background-color: rgb(173, 15, 91);`
+    background-color: rgb(173, 15, 91);
+    cursor: pointer;`
 
 const Heading = styled.h2`
     margin-right: 50px;
@@ -23,8 +24,11 @@ const Heading = styled.h2`
 `
 
 const Header: React.FC = () => {
+    const refreshPage = () => {
+        window.location.reload()
+    }
     return (
-        <HeaderStyle>
+        <HeaderStyle onClick={refreshPage}>
             <Heading>TD-SCM</Heading>
             <Heading>Test-Driven Smart Contract Modeling</Heading>
         </HeaderStyle>

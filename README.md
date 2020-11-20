@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/signavio/SCM/tree/master.svg?style=svg&circle-token=63cd7782954c7d813d4527a5466c5bdc7493188d)](https://circleci.com/gh/signavio/SCM/tree/master)
 
-:dart: TD-SCM is a tool that provides the user a platform to compile business process models to smart contract that can be deployed to a blockchain network using the test-driven approach.
+:dart: TD-SCM is a tool that allows users to model smart contracts as business process (BPMN 2.0) diagrams, specify test cases for the smart contracts directly within the BPMN diagrams, and test the diagrams before deploying them to an Ethereum or Hyperledger Fabric blockchain.
 
 ## Table of Contents:scroll:
 
@@ -17,7 +17,7 @@
 
 ## Motivation:bulb:
 
-The main motivation behind the conception of this tool is to provide an interface to test the correctness and integrity of a business process model before it is compiled and deployed to the blockchain network. This pre-check could potentially avoid the risk of deploying a smart contract with errors. The tool also embraces the [Test driven development](https://en.wikipedia.org/wiki/Test-driven_development) process in the business process modelling.
+The main motivation behind the conception of this tool is to provide an interface to test the correctness and integrity of a business process model before it is compiled and deployed to a blockchain network. This pre-check could potentially avoid the risk of deploying a smart contract with errors. The tool embraces the [Test driven development](https://en.wikipedia.org/wiki/Test-driven_development) approach in a business process modeling/model-driven development context.
 
 ## Prerequisites:memo:
 
@@ -28,21 +28,21 @@ The main motivation behind the conception of this tool is to provide an interfac
 
 ### Using Signavio Process Manager
 
-If you are modeling the diagram using the signavio process manager then kindly follow the steps as follows.
+in case you are modeling the diagram using Signavio Process Manager, follow the steps below.
 
 - The business process model must be modeled according to the modeling specification.
 
-1. #### Configuring Script task
+1. #### Configuring a Script TTask
 
-- The Task types must be properly specified. The tool specifically expects the script tasks to be correctly defined.
-- The script task by definition has an attribute called "Script". This attribute must contain the script value in the below format.
+- The task types must be properly specified. The tool specifically expects the script tasks to be correctly defined.
+- The script task by definition has an attribute called "Script". This attribute must contain the script value in the following format:
 
 ```javascript
 if (userID >= 10) applicantEligible = true
 else applicantEligible = false
 ```
 
-- Create a custom attributes on BPMN task called "Test values" of type "Table" with columns "inputs" and "outputs" as shown in this image ![alt Test values custom attribute](https://github.com/signavio/Test-Driven-Process-Modeling/blob/master/images/Test%20Values%20attribute.png).
+- Create a custom attributes on BPMN task called "Test values" of type "Table" with columns "inputs" and "outputs" as shown in this image: ![Test values custom attribute](https://raw.githubusercontent.com/signavio/Test-Driven-Process-Modeling/master/Images/Test%20Values%20attribute.png)
 - On your script task, provide the input and output values using this "Test values" custom attribute. For example input could be `userID = 5` and output could be `applicantEligible = false`.
 - So in summary, your corresponding input and expected output values should go inside this table, i.e, the custom attribute "Test values".
 - Create another custom attribute on BPMN task called "Test function" of type "Multi-line text" for the BPMN task.
@@ -57,14 +57,18 @@ if (userID >= 10) {
 return applicantEligible
 ```
 
-- To sum it up your script task must contain the attribute "Script" with the script value, custom attribute "Test values" with the input and output values, custom attribute "Test function" which takes the same value as defined for the attribute "Script" with an additional return value.
+- To summarize: your script task must contain:
+
+  - The attribute "Script" with the script value;
+  - The custom attribute "Test values" with the input and output values;
+  - The custom attribute "Test function" which takes the same value as defined for the attribute "Script" with an additional return value.
 - This [documentation](https://documentation.signavio.com/suite/en-us/Content/process-manager/userguide/workspace-admin/configure-notations-and-attributes.htm) should come in handy to create custom attributes within the Process Manager.
 
 2. #### Configuring Gateways and Sequence flows
 
 - All the gateways used in the model should be uniquely named.
 - All the sequence flows should be correctly named as shown in the below ![alt sample model](https://github.com/signavio/Test-Driven-Process-Modeling/blob/master/images/sample%20model.png).
-- For example, in this sample model the script task "Check userID" has the custom attribute "Test function" value as
+- For example, in this sample model, the script task "Check userID" has the following "Test function" value:
 
 ```javascript
 if (userID >= 10) {
@@ -75,18 +79,18 @@ if (userID >= 10) {
 return applicantEligible
 ```
 
-- So the emerging sequence flows must both be named as `applicantEligible` because that is the output value emerging out of that script task. This is required because this value is captured during the compilation to smart contracts. Failure to correctly configure this sequence flows may result in compilation errors in smart contracts.
+- The emerging sequence flows must both be named as `applicantEligible` because this is the output value of the script task. This is required because this value is captured during the compilation to smart contracts. Failure to correctly configure this sequence flows may result in compilation errors.
 
 3. #### Configuring documentation for tasks
 
-- All the task elements in the model must contain its own main attribute called "Documentation" whose value must be in the below format. For example in the sample model shown above, we have a task called "Enter userID". The "Documentation" attribute must be configured as
+- All task elements in the model must contain have their "Documentation" value specified.For example, in the sample model shown above, we have a task called "Enter userID". The "Documentation" attribute must be configured as follows:
 
 ```javascript
 (uint _userID) : (uint userID) -> {userID = _userID; }
 ```
 
 - This documentation could be understood as what that specific task does. This is crucial because when compiling the BPMN models to smart contracts, each task element is seen as a separate function which performs its own action. So the documentation essentially acts as the body of the function.
-- The task called "Confirm Acceptance" must be configured with its "Documentation" attribute as
+- The task called "Confirm Acceptance" must be configured with its "Documentation" attribute as follows:
 
 ```javascript
 (bool _confirmation) : (bool applicantEligible) -> {applicantEligible = _confirmation; }

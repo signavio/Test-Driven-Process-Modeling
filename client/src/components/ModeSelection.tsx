@@ -44,7 +44,7 @@ const ModeSelection: React.FC<Props> = ({ mode, changeMode }) => {
     return (
         <Container>
             <Heading>Choose your mode for importing the BPMN 2.0 XMl file</Heading>
-            <ModeButton onClick={() => changeMode('USE_SIGNAVIO')}>Login with Signavio</ModeButton>
+            <ModeButton data-testid="loginWithSignavio" onClick={() => changeMode('USE_SIGNAVIO')}>Login with Signavio</ModeButton>
             <ModeButton onClick={() => changeMode('USE_FILE_UPLOAD')}>Use file upload</ModeButton>
         </Container>
     )

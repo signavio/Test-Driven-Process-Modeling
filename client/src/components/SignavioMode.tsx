@@ -150,6 +150,7 @@ type ContractType = {
     Bytecode: string
     Solidity: string
 }
+
 const SignavioMode: React.FC = () => {
 
     const [state, dispatch] = useReducer(authenticateReducer, initialState)
@@ -220,7 +221,7 @@ const SignavioMode: React.FC = () => {
                 <InputStyle type="text" required name="contractName" value={state?.contractName} onChange={handleFieldChange}></InputStyle>
                     </LabelStyle>
 
-                    <SubmitButton type="submit" disabled={state?.isLogging}>
+                    <SubmitButton data-testid="submit" type="submit" disabled={state?.isLogging}>
                         {state?.isLogging ? 'Authenticating...' : 'Authenticate'}
                     </SubmitButton>
                 </FormStyle>}
@@ -230,7 +231,7 @@ const SignavioMode: React.FC = () => {
 
             {contract
                 ? <Fragment>
-                    <Details>Solidity code</Details>
+                    <Details data-testid="solidity">Solidity code</Details>
                     <DisplayContract codeBlock={contract.Solidity} type='SOLIDITY' />
                 </Fragment> : null}
             {contract

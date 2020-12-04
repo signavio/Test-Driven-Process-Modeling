@@ -24,6 +24,7 @@
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "formidable": "^1.2.2",
     "helmet": "^4.2.0",
     "js-beautify": "^1.12.0",
     "kill-port": "^1.5.1",

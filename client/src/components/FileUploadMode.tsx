@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
+import uploadFile from '../api/uploadFile'
 
 const Container = styled.div`
 margin-left:25px;
@@ -55,16 +56,36 @@ const SubmitButton = styled.input`
     }
 `
 
+const isBpmnfile = (file: File) => {
+    const { name, type } = file
+    if (type === 'bpmn' || name.endsWith('.bpmn')) {
+        return true
+    }
+
+    return false
+}
 
 const FileUpload: React.FC = () => {
+    const [selectedFile, setSelectedFile] = useState<File>()
 
     const handleFormSubmit = (event: React.FormEvent) => {
         event.preventDefault()
+        if (selectedFile && isBpmnfile(selectedFile)) {
+            const data = new FormData()
+            data.append('file', selectedFile)
+            uploadFile(data)
+        }
+    }
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = (event.target?.files![0])
+        setSelectedFile(file)
+
     }
     return (
         <Container>
             <FormStyle onSubmit={handleFormSubmit}>
-                <InputStyle type="file"></InputStyle>
+                <InputStyle type="file" onChange={handleFileChange}></InputStyle>
                 <SubmitButton type="submit" value="Upload" />
             </FormStyle>
         </Container>

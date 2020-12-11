@@ -1,22 +1,17 @@
-import express from 'express'
-import { join } from 'path'
+import express, { Request, Response } from 'express'
 import { urlencoded, json } from 'body-parser'
 import cookieParser from 'cookie-parser'
-import axios, { AxiosRequestConfig } from 'axios'
-import { stringify } from 'qs'
 import { addGlobalDocumentation } from './server/addGlobalDocumentation'
 import { compile } from 'bpmn-sol'
 import { hasTestPassed } from './server/testModule'
-import beautify from 'js-beautify'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import path from 'path'
-import Axios from 'axios'
 import fetchCookie from './server/api/fetchCookie'
-import config from './config'
 import cors from 'cors'
 import getCookieDetails from './server/helpers/getCookieDetails'
 import fetchDiagramXml from './server/api/fetchDiagramXml'
+import handleFileUpload from './server/api/handleFileUpload'
 
 const app: express.Application = express()
 const PORT = process.env.PORT || 8080
@@ -29,9 +24,9 @@ app.use(helmet())
 app.use(cookieParser())
 app.use(cors({ origin: true }))
 app.use(urlencoded({ extended: false }))
-// app.use(json())
 
-app.post('/submit', async (req, res, next) => {
+
+app.post('/submit', async (req: Request, res: Response, next) => {
   const {
     username,
     password,
@@ -64,6 +59,15 @@ app.post('/submit', async (req, res, next) => {
     res.send({ status: 401, message: 'Error authenticating. Please check your credentials.' })
   }
 })
+
+interface CustomRequest extends Request {
+  file: any
+  rawBody: any
+}
+app.post('/file', async (req: CustomRequest, res) => {
+  await handleFileUpload(req, res)
+})
+
 
 app.get('*', (req, res) => {
   res.sendFile(`${path.resolve('./')} /client/build/index.html`)

@@ -15,14 +15,17 @@ const isFileSavedToLocal = async (path, newPath, res) =>
             message: 'Error while saving file to local',
             error: err
         })
-        res.send({
-            status: 200,
-            message: 'File successfully saved to local',
-        })
     })
 
+const sendXMLString = async (path, res) => {
+    const data = await fs.readFileSync(path, 'utf-8')
 
-
+    res.send({
+        status: 200,
+        message: 'XML file',
+        data,
+    })
+}
 const saveFileToLocal = async (error, fields, files, res) => {
     if (error) {
         res.send({
@@ -34,6 +37,9 @@ const saveFileToLocal = async (error, fields, files, res) => {
     const { file: { path: oldPath, name } } = files
     const newPath = `${path.resolve("./")}/temp/${name}`
     await isFileSavedToLocal(oldPath, newPath, res)
+    await sendXMLString(newPath, res)
+
+
 }
 const handleFileUpload = async (incomingRequest: CustomRequest, res: Response) => {
 

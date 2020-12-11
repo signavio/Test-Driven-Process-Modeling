@@ -68,12 +68,13 @@ const isBpmnfile = (file: File) => {
 const FileUpload: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File>()
 
-    const handleFormSubmit = (event: React.FormEvent) => {
+    const handleFormSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
         if (selectedFile && isBpmnfile(selectedFile)) {
-            const data = new FormData()
-            data.append('file', selectedFile)
-            uploadFile(data)
+            const fileData = new FormData()
+            fileData.append('file', selectedFile)
+            const { data } = await uploadFile(fileData)
+
         }
     }
 

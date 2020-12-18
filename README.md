@@ -67,7 +67,7 @@ return applicantEligible
 2. #### Configuring Gateways and Sequence flows
 
 - All the gateways used in the model should be uniquely named.
-- All the sequence flows should be correctly named as shown in the below ![alt sample model](https://github.com/signavio/Test-Driven-Process-Modeling/blob/master/images/sample%20model.png).
+- All the sequence flows should be correctly named as shown in the below ![alt sample model](https://github.com/signavio/Test-Driven-Process-Modeling/blob/master/Images/sample%20model.png).
 - For example, in this sample model, the script task "Check userID" has the following "Test function" value:
 
 ```javascript

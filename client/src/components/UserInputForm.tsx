@@ -3,18 +3,6 @@ import styled from 'styled-components'
 import postModelDetails from '../api/postModelDetails'
 import DisplayContract from './DisplayContract'
 
-const Container = styled.div`
-margin-left:25px;
-display: flex;
-flex-direction: column;
-margin-top: 100px;
-justify-content:baseline;
-width:90%;
-height: 70%;
-align-items: center;
-background-color:#096e75;
-border-radius: 8px;
-`
 
 const FormStyle = styled.form`
 margin-top:20px;
@@ -195,7 +183,7 @@ const UserInputForm: React.FC<Props> = ({ xmlString }) => {
 
 
     return (
-        <Container>
+        <Fragment>
             {contract
                 ? null
                 : <FormStyle onSubmit={handleFormSubmit}>
@@ -231,7 +219,7 @@ const UserInputForm: React.FC<Props> = ({ xmlString }) => {
                     <DisplayContract codeBlock={contract.Bytecode} type='BYTECODE' />
                 </Fragment>
                 : null}
-        </Container >
+        </Fragment >
     )
 }
 

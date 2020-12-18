@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import uploadFile from '../api/uploadFile'
+import UserInputForm from './UserInputForm'
 
 const Container = styled.div`
 margin-left:25px;
@@ -9,7 +10,7 @@ flex-direction: column;
 margin-top: 100px;
 justify-content:center;
 width:90%;
-height: 40%;
+height: 70%;
 align-items: center;
 background-color:#096e75;
 border-radius: 8px;
@@ -67,13 +68,17 @@ const isBpmnfile = (file: File) => {
 
 const FileUpload: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File>()
+    const [xmlString, setXmlString] = useState('')
 
     const handleFormSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
         if (selectedFile && isBpmnfile(selectedFile)) {
             const fileData = new FormData()
             fileData.append('file', selectedFile)
-            const { data } = await uploadFile(fileData)
+            const { data, status } = await uploadFile(fileData)
+            if (status === 200 && data) {
+                setXmlString(data!)
+            }
 
         }
     }
@@ -85,10 +90,13 @@ const FileUpload: React.FC = () => {
     }
     return (
         <Container>
-            <FormStyle onSubmit={handleFormSubmit}>
-                <InputStyle type="file" onChange={handleFileChange}></InputStyle>
-                <SubmitButton type="submit" value="Upload" />
-            </FormStyle>
+            {xmlString
+                ? <UserInputForm xmlString={xmlString} />
+                : <FormStyle onSubmit={handleFormSubmit}>
+                    <InputStyle type="file" onChange={handleFileChange}></InputStyle>
+                    <SubmitButton type="submit" value="Upload" />
+                </FormStyle>
+            }
         </Container>
     )
 }

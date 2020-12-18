@@ -60,6 +60,32 @@ app.post('/submit', async (req: Request, res: Response, next) => {
   }
 })
 
+app.post('/compile', async (req: Request, res: Response, next) => {
+  const {
+    xmlString,
+    globalVariables,
+    contractName,
+  } = req.body
+
+
+  try {
+    let xmlWithGlobalVariables = addGlobalDocumentation(
+      xmlString,
+      globalVariables,
+      contractName
+    )
+    const successFlag = hasTestPassed(xmlWithGlobalVariables)
+    if (successFlag) {
+      const contract: any = await compile(xmlWithGlobalVariables)
+      res.send({ status: 200, message: 'Success', data: contract })
+    } else {
+      res.send({ status: 500, message: 'Tests failed. Please check the diagram details.' })
+    }
+  } catch (error) {
+    res.send({ status: 404, message: 'Error while fetching diagram. Please provide the correct diagram details' })
+  }
+})
+
 interface CustomRequest extends Request {
   file: any
   rawBody: any

@@ -13,11 +13,23 @@ class SignavioParser {
         this.setXMlWithGlobalVariables()
     }
 
-    public parse(): boolean {
+    /**
+     * Expose a factory method to instantiate Signavio parser
+     */
+    public static parse(xml, globalVariables, contractName): SignavioParser {
+        return new SignavioParser(xml, globalVariables, contractName)
+    }
 
+    private getTestFunctionAndInputOutputValues(): Array<object> {
         const scriptAndTestValues = this.fetchTestScriptAndValues(this.xmlWithGlobalVariables.bpmn)
         const inputAndOutputValues = this.getInputAndOutputTestValues(scriptAndTestValues)
         const testFunctions = this.getTestFunctions(scriptAndTestValues)
+
+        return [testFunctions, inputAndOutputValues]
+    }
+
+    public getTestResult(): boolean {
+        const [testFunctions, inputAndOutputValues] = this.getTestFunctionAndInputOutputValues()
         const testFailCount = this.getTestFailCount(testFunctions, inputAndOutputValues)
 
         let hasTestPassed = false
@@ -55,7 +67,6 @@ class SignavioParser {
             bpmn: xmlDiagram,
             name: contractName,
         }
-        this.xmlWithGlobalVariables = xml
         return xml
     }
 

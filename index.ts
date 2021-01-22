@@ -39,10 +39,10 @@ app.post('/submit', async (req: Request, res: Response, next) => {
     try {
 
       const diagramXml = await fetchDiagramXml({ revisionId, ...getCookieDetails(cookieData) })
-      const parser = new SignavioParser(diagramXml,
+      const parser = SignavioParser.parse(diagramXml,
         globalVariables,
         contractName)
-      const isSuccessfullyParsed = parser.parse()
+      const isSuccessfullyParsed = parser.getTestResult()
 
       if (isSuccessfullyParsed) {
         const contract: any = await compile(parser.getXmlWithGlobalVariables())
@@ -68,11 +68,11 @@ app.post('/compile', async (req: Request, res: Response, next) => {
 
 
   try {
-    const parser = new SignavioParser(xmlString,
+    const parser = SignavioParser.parse(xmlString,
       globalVariables,
       contractName)
 
-    const isSuccessfullyParsed = parser.parse()
+    const isSuccessfullyParsed = parser.getTestResult()
 
     if (isSuccessfullyParsed) {
       const contract: any = await compile(parser.getXmlWithGlobalVariables())

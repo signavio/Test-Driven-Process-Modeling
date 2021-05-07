@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express'
 import { urlencoded, json } from 'body-parser'
 import cookieParser from 'cookie-parser'
 import { addGlobalDocumentation } from './server/addGlobalDocumentation'
-import { compile } from 'bpmn-sol'
+import compile from 'bpmn-sol'
 import { hasTestPassed } from './server/testModule'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
@@ -82,7 +82,7 @@ app.post('/compile', async (req: Request, res: Response, next) => {
       res.send({ status: 500, message: 'Tests failed. Please check the diagram details.' })
     }
   } catch (error) {
-    res.send({ status: 404, message: 'Error while fetching diagram. Please provide the correct diagram details' })
+    res.send({ status: 404, message: 'Error while compiling to smart contract. Please provide the correct diagram details' })
   }
 })
 

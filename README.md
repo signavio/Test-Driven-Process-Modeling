@@ -125,7 +125,7 @@ uint userID; bool applicantEligible = false; bool applicantEligibleAgain = false
 
 - Click _submit_ . The compiled details of the smart contract is then logged in the console(terminal).
 
-## Features:
+## Additional feature:
 The prototype currently supports the upload of a bpmn.xml file modeled using Signavio Process Manager.
 
 ## Roadmap:checkered_flag:

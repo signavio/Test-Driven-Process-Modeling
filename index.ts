@@ -1,9 +1,8 @@
 import express, { Request, Response } from 'express'
 import { urlencoded, json } from 'body-parser'
 import cookieParser from 'cookie-parser'
-import { addGlobalDocumentation } from './server/addGlobalDocumentation'
 import compile from 'bpmn-sol'
-import { hasTestPassed } from './server/testModule'
+import SignavioParser from './packages/signavio-parser'
 import bodyParser from 'body-parser'
 import helmet from 'helmet'
 import path from 'path'
@@ -38,15 +37,15 @@ app.post('/submit', async (req: Request, res: Response, next) => {
   try {
     const cookieData = await fetchCookie({ name: username, password: password, tokenonly: 'true' })
     try {
+
       const diagramXml = await fetchDiagramXml({ revisionId, ...getCookieDetails(cookieData) })
-      let xmlWithGlobalVariables = addGlobalDocumentation(
-        diagramXml,
+      const parser = SignavioParser.parse(diagramXml,
         globalVariables,
-        contractName
-      )
-      const successFlag = hasTestPassed(xmlWithGlobalVariables)
-      if (successFlag) {
-        const contract: any = await compile(xmlWithGlobalVariables)
+        contractName)
+      const isSuccessfullyParsed = parser.getTestResult()
+
+      if (isSuccessfullyParsed) {
+        const contract: any = await compile(parser.getXmlWithGlobalVariables())
         res.send({ status: 200, message: 'Success', data: contract })
       } else {
         res.send({ status: 500, message: 'Tests failed. Please check the diagram details.' })
@@ -69,14 +68,14 @@ app.post('/compile', async (req: Request, res: Response, next) => {
 
 
   try {
-    let xmlWithGlobalVariables = addGlobalDocumentation(
-      xmlString,
+    const parser = SignavioParser.parse(xmlString,
       globalVariables,
-      contractName
-    )
-    const successFlag = hasTestPassed(xmlWithGlobalVariables)
-    if (successFlag) {
-      const contract: any = await compile(xmlWithGlobalVariables)
+      contractName)
+
+    const isSuccessfullyParsed = parser.getTestResult()
+
+    if (isSuccessfullyParsed) {
+      const contract: any = await compile(parser.getXmlWithGlobalVariables())
       res.send({ status: 200, message: 'Success', data: contract })
     } else {
       res.send({ status: 500, message: 'Tests failed. Please check the diagram details.' })

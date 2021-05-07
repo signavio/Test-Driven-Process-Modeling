@@ -160,17 +160,26 @@ const UserInputForm: React.FC<Props> = ({ xmlString }) => {
         }
 
 
-        const response = await postModelDetails(formData)
-        const { status, message, data } = response.data
-        if (status === 200) {
-            setContract(data)
-        } else {
+        try {
+            const response = await postModelDetails(formData)
+            const { status, message, data } = response.data
+            if (status === 200) {
+                setContract(data)
+            } else {
+                dispatch({
+                    type: 'ERROR',
+                    fieldName: 'errorMessage',
+                    payload: message
+                })
+            }
+        } catch (error) {
             dispatch({
                 type: 'ERROR',
                 fieldName: 'errorMessage',
-                payload: message
+                payload: error.message
             })
         }
+
     }
 
     const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -13,11 +13,11 @@ const postModelDetails = async (data: RequestData) => {
             },
             data: JSON.stringify(data)
         })
-
         return response
     } catch (error) {
         throw error
+
     }
 }
 
-export default postModelDetails 
+export default postModelDetails

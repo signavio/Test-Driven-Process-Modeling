@@ -1,5 +1,5 @@
 # TD-SCM - Test-driven Smart Contract Modeling with Signavio Process Manager
-
+[![REUSE status](https://api.reuse.software/badge/github.com/signavio/Test-Driven-Process-Modeling)](https://api.reuse.software/info/github.com/signavio/Test-Driven-Process-Modeling)
 [![CircleCI](https://circleci.com/gh/signavio/SCM/tree/master.svg?style=svg&circle-token=63cd7782954c7d813d4527a5466c5bdc7493188d)](https://circleci.com/gh/signavio/SCM/tree/master)
 
 :dart: TD-SCM is a tool that allows users to model smart contracts as business process (BPMN 2.0) diagrams, specify test cases for the smart contracts directly within the BPMN diagrams, and test the diagrams before deploying them to an Ethereum or Hyperledger Fabric blockchain.
